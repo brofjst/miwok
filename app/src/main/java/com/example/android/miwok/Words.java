@@ -6,7 +6,7 @@ public class Words {
     private int mImageID = NO_IMAGE_PROVIDED;
 
     /**
-     * costruttore per view senza immagini
+     * constructor for views w/o images
      *
      * @param defaultTranslation
      * @param miwokTranslation
@@ -17,7 +17,7 @@ public class Words {
     }
 
     /**
-     * costrutore per view con immagini
+     * constructor for views with containing images
      *
      * @param defaultTranslation word in Default language translation
      * @param miwokTranslation   word in miwok translation
