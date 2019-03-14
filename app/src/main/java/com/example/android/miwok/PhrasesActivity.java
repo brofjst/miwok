@@ -15,8 +15,11 @@
  */
 package com.example.android.miwok;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class PhrasesActivity extends AppCompatActivity {
 
@@ -24,5 +27,22 @@ public class PhrasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phrases);
+
+        ArrayList<Words> phrasesList = new ArrayList<Words>();
+        phrasesList.add(new Words("where are you going?", "where are you goingt?"));
+        phrasesList.add(new Words("what is your name", "what is your namet?"));
+        phrasesList.add(new Words("my name is", "my name ist"));
+        phrasesList.add(new Words("how are you feeling?", "how are you feelingt?"));
+        phrasesList.add(new Words("im feeling good", "im feeling goodt"));
+        phrasesList.add(new Words("are you coming?", "are you comingt?"));
+        phrasesList.add(new Words("yes im coming", "yes im comingt"));
+        phrasesList.add(new Words("im coming", "im comingt"));
+        phrasesList.add(new Words("let's go", "let's got"));
+        phrasesList.add(new Words("come heret", "come heret"));
+
+        WordsAdapter phrasesAdapter = new WordsAdapter(this, phrasesList, R.color.category_phrases);
+        ListView phrasesView = (ListView) findViewById(R.id.phrases_layout);
+
+        phrasesView.setAdapter(phrasesAdapter);
     }
 }
