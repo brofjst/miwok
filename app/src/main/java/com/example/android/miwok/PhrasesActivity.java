@@ -15,34 +15,71 @@
  */
 package com.example.android.miwok;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class PhrasesActivity extends AppCompatActivity {
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phrases);
 
-        ArrayList<Words> phrasesList = new ArrayList<Words>();
-        phrasesList.add(new Words("where are you going?", "where are you goingt?"));
-        phrasesList.add(new Words("what is your name", "what is your namet?"));
-        phrasesList.add(new Words("my name is", "my name ist"));
-        phrasesList.add(new Words("how are you feeling?", "how are you feelingt?"));
-        phrasesList.add(new Words("im feeling good", "im feeling goodt"));
-        phrasesList.add(new Words("are you coming?", "are you comingt?"));
-        phrasesList.add(new Words("yes im coming", "yes im comingt"));
-        phrasesList.add(new Words("im coming", "im comingt"));
-        phrasesList.add(new Words("let's go", "let's got"));
-        phrasesList.add(new Words("come heret", "come heret"));
+        final ArrayList<Words> phrasesList = new ArrayList<Words>();
+        phrasesList.add(new Words("where are you going?", "where are you goingt?", R.raw.phrase_where_are_you_going));
+        phrasesList.add(new Words("what is your name", "what is your namet?", R.raw.phrase_what_is_your_name));
+        phrasesList.add(new Words("my name is", "my name ist", R.raw.phrase_my_name_is));
+        phrasesList.add(new Words("how are you feeling?", "how are you feelingt?", R.raw.phrase_how_are_you_feeling));
+        phrasesList.add(new Words("im feeling good", "im feeling goodt", R.raw.phrase_im_feeling_good));
+        phrasesList.add(new Words("are you coming?", "are you comingt?", R.raw.phrase_are_you_coming));
+        phrasesList.add(new Words("yes im coming", "yes im comingt", R.raw.phrase_yes_im_coming));
+        phrasesList.add(new Words("im coming", "im comingt", R.raw.phrase_im_coming));
+        phrasesList.add(new Words("let's go", "let's got", R.raw.phrase_lets_go));
+        phrasesList.add(new Words("come heret", "come heret", R.raw.phrase_come_here));
 
         WordsAdapter phrasesAdapter = new WordsAdapter(this, phrasesList, R.color.category_phrases);
         ListView phrasesView = (ListView) findViewById(R.id.phrases_layout);
 
         phrasesView.setAdapter(phrasesAdapter);
+
+        phrasesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Words word = phrasesList.get(position);
+                mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, word.getSongID());
+                mMediaPlayer.start();
+            }
+        });
+
+    }
+
+    /**
+     * Clean up the media player by releasing its resources.
+     */
+    private void releaseMediaPlayer() {
+        // If the media player is not null, then it may be currently playing a sound.
+        if (mMediaPlayer != null) {
+            // Regardless of the current state of the media player, release its resources
+            // because we no longer need it.
+            mMediaPlayer.release();
+
+            // Set the media player back to null. For our code, we've decided that
+            // setting the media player to null is an easy way to tell that the media player
+            // is not configured to play an audio file at the moment.
+            mMediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
     }
 }
